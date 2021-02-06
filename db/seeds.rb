@@ -1,39 +1,30 @@
-# template = DescriptionTemplate.create(
-#   name: 'Test template',
-#   template: 'test'
-# )
-#
-# tony = Presenter.create(
-#   name: 'Tony Stark',
-#   twitter_handle: 'tonystark',
-#   linked_in: 'https://linkedin.com/u/tony',
-#   role: 'Super hero',
-# )
-#
-# steve = Presenter.create(
-#   name: 'Steve',
-#   twitter_handle: 'steve',
-#   linked_in: 'https://linkedin.com/u/steve',
-#   role: 'Minecrafter',
-# )
-#
-# video = Video.create!(
-#   youtube_id: 'Y47kSCiQCN0',
-#   title: 'Test video',
-#   tags: ['a', 'b', 'c'],
-#   chapter_markers: '00:00 start',
-#   description_template: template,
-#   presenters: [tony, steve]
-# )
+template_content = <<~XXX
+<%= summary %>
 
-require 'google/api_client/client_secrets'
-require 'byebug'
+### Presenters
 
-byebug
-creds = YoutubeSession.last.credentials
-byebug
+<% presenters.each do |presenter| %>
+<%= presenter.name %> <%= presenter.role %> <%= presenter.twitter_url %>
+<% end %>
 
-p 1+1
+<%= '### Table of contents' if !chapter_markers.blank? %>
 
-Signet::OAuth2::Client.new(JSON.parse(creds))
-p 1+1
+<%= chapter_markers %>
+
+<%= '### Resources' if video_resources.any? %>
+
+<% video_resources.each do |r| %>
+<%= r.title %>: <%= r.url %>
+<% end %>
+XXX
+
+template = DescriptionTemplate.create!(
+  name: 'Default',
+  template: template_content
+)
+cj = Presenter.create!(
+  name: 'CJ Avilla',
+  twitter_handle: 'cjav_dev',
+  linked_in: 'https://www.linkedin.com/in/cjavilla/',
+  role: 'Developer Advocate',
+)

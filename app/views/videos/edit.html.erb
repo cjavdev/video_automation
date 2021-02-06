@@ -8,7 +8,7 @@
     <label for="description_template">Description Template</label>
     <select name="video[description_template_id]">
       <% @description_templates.each do |template| %>
-        <option value="<%= template.id %>"><%= template.name %></option>
+      <option value="<%= template.id %>" <%= 'selected' if template.id == @video.description_template_id %>><%= template.name %></option>
       <% end %>
     </select>
   </div>
@@ -19,13 +19,18 @@
   </div>
 
   <div>
+    <label for="summary">Summary</label>
+    <textarea name="video[summary]" id="summary" rows="8" cols="40"><%= @video.summary %></textarea>
+  </div>
+
+  <div>
     <label for="chapter_markers">Chapter markers</label>
     <textarea name="video[chapter_markers]" id="chapter_markers" rows="8" cols="40"><%= @video.chapter_markers %></textarea>
   </div>
 
   <div>
     <label for="tags">Tags (comma separated)</label>
-    <input type="text" name="video[tags]" id="tags" value="<%= @video.tags.join(",") %>">
+    <input type="text" name="video[raw_tags]" id="tags" value="<%= @video.tags.join(",") %>">
   </div>
 
   <div>
@@ -37,3 +42,6 @@
 
   <input type="submit" value="Update video">
 </form>
+
+
+<%= video_embed @video %>

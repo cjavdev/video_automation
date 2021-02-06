@@ -2,6 +2,11 @@
 
 <%= link_to "edit", edit_video_path(@video) %>
 
+<form action="/videos/<%= @video.id %>/sync" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="submit" value="Sync">
+</form>
+
 <%= @video.youtube_id %>
 <%= @video.title %>
 <%= @video.tags %>
@@ -10,10 +15,4 @@
 
 <textarea rows="20" cols="60"><%= @video.description %></textarea>
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/<%= @video.youtube_id %>"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen></iframe>
+<%= video_embed @video %>

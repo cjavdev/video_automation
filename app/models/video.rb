@@ -17,6 +17,10 @@ class Video < ApplicationRecord
   has_many :presenters, through: :video_presenters
   has_many :video_resources
 
+  def raw_tags=(raw_tags)
+    self.tags = raw_tags.split(',').map(&:strip)
+  end
+
   def description
     erb_template = ERB.new(
       description_template.template,

@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   root 'videos#index'
-  resources :videos
+
+  resources :videos do
+    member do
+      post :sync
+    end
+  end
+
   resources :presenters
   resources :description_templates
 
