@@ -1,0 +1,34 @@
+<% action = @presenter.persisted? ? presenter_path(@presenter) : presenters_path %>
+<form action="<%= action %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <% if @presenter.persisted? %>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
+
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="presenter[name]" id="name" value="<%= @presenter.name %>">
+  </div>
+
+  <div>
+    <label for="twitter_handle">Twitter handle</label>
+    <input type="text" name="presenter[twitter_handle]" id="twitter_handle" value="<%= @presenter.twitter_handle %>">
+  </div>
+
+  <div>
+    <label for="linked_in">LinkedIn</label>
+    <input type="text" name="presenter[linked_in]" id="linked_in" value="<%= @presenter.linked_in %>">
+  </div>
+
+  <div>
+    <label for="role">Role</label>
+    <input type="text" name="presenter[role]" id="role" value="<%= @presenter.role %>">
+  </div>
+
+  <% if @presenter.persisted? %>
+    <input type="submit" value="Update">
+  <% else %>
+    <input type="submit" value="Create">
+  <% end %>
+
+</form>

@@ -1,0 +1,9 @@
+<h1>Description Templates</h1>
+
+<%= link_to "Add", new_description_template_path %>
+
+<ul>
+  <% @templates.each do |template| %>
+    <li><%= link_to "edit", edit_description_template_path(template) %> <%= template.name %></li>
+  <% end %>
+</ul>

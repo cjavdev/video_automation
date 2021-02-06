@@ -1,0 +1,7 @@
+<h1>Videos</h1>
+
+<ul>
+  <% @videos.each do |video| %>
+  <li><%= link_to video.title, video %></li>
+  <% end %>
+</ul>

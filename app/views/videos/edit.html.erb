@@ -1,0 +1,39 @@
+<h1>Edit <%= @video.title %></h1>
+
+<form action="<%= video_path(@video) %>" method="POST">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <input type="hidden" name="_method" value="PUT">
+
+  <div>
+    <label for="description_template">Description Template</label>
+    <select name="video[description_template_id]">
+      <% @description_templates.each do |template| %>
+        <option value="<%= template.id %>"><%= template.name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <div>
+    <label for="title">Title</label>
+    <input type="text" name="video[title]" id="title" value="<%= @video.title %>">
+  </div>
+
+  <div>
+    <label for="chapter_markers">Chapter markers</label>
+    <textarea name="video[chapter_markers]" id="chapter_markers" rows="8" cols="40"><%= @video.chapter_markers %></textarea>
+  </div>
+
+  <div>
+    <label for="tags">Tags (comma separated)</label>
+    <input type="text" name="video[tags]" id="tags" value="<%= @video.tags.join(",") %>">
+  </div>
+
+  <div>
+    <% @presenters.each do |presenter| %>
+      <label for="presenter-<%= presenter.id %>"><%= presenter.name %></label>
+      <input type="checkbox" name="video[presenter_ids][]" id="presenter-<%= presenter.id %>" value="<%= presenter.id %>" <%= 'checked' if @video.presenter_ids.include?(presenter.id) %>>
+    <% end %>
+  </div>
+
+  <input type="submit" value="Update video">
+</form>

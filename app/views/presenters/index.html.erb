@@ -1,0 +1,15 @@
+<h1>Presenters</h1>
+
+<%= link_to "Add", new_presenter_path %>
+
+<ul>
+  <% @presenters.each do |presenter| %>
+    <li>
+      <%= presenter.name %>
+      <%= presenter.twitter_handle %>
+      <%= presenter.linked_in %>
+      <%= presenter.role %>
+      <%= link_to "edit", edit_presenter_path(presenter) %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,20 @@
+<% action = @template.persisted? ? description_template_path(@template) : description_templates_path %>
+<form action="<%= action %>" method="post">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <% if @template.persisted? %>
+    <input type="hidden" name="_method" value="PUT">
+  <% end %>
+
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="template[name]" id="name" value="<%= @template.name %>">
+  </div>
+
+  <div>
+    <label for="template">Template (erb)</label>
+    <textarea name="template[template]" id="template" rows="20" cols="40"><%= @template.template %></textarea>
+  </div>
+
+  <input type="submit" value="Submit">
+</form>
+
