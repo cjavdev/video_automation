@@ -1,9 +1,15 @@
 class VideosController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:thumb_upload]
+
   def index
     @videos = Video.order(id: :desc)
   end
 
   def show
+    @video = Video.find(params[:id])
+  end
+
+  def thumb
     @video = Video.find(params[:id])
   end
 
@@ -36,6 +42,7 @@ class VideosController < ApplicationController
     params[:video][:presenter_ids] ||= []
     params.require(:video).permit(
       :title,
+      :subtitle,
       :raw_tags,
       :chapter_markers,
       :summary,

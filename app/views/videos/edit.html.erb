@@ -19,6 +19,11 @@
   </div>
 
   <div>
+    <label for="subtitle">Subtitle</label>
+    <input type="text" name="video[subtitle]" id="subtitle" value="<%= @video.subtitle %>">
+  </div>
+
+  <div>
     <label for="summary">Summary</label>
     <textarea name="video[summary]" id="summary" rows="8" cols="40"><%= @video.summary %></textarea>
   </div>
@@ -30,7 +35,7 @@
 
   <div>
     <label for="tags">Tags (comma separated)</label>
-    <input type="text" name="video[raw_tags]" id="tags" value="<%= @video.tags.join(",") %>">
+    <input type="text" name="video[raw_tags]" id="tags" value="<%= @video.tags.join(",") if !@video.tags.blank? %>">
   </div>
 
   <div>

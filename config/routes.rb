@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :videos do
     member do
       post :sync
+      get :thumb
     end
   end
 

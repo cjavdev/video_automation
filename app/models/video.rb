@@ -30,4 +30,15 @@ class Video < ApplicationRecord
     )
     erb_template.result(binding)
   end
+
+  def thumb_svg
+    img_template = File.read(File.join(Rails.root, "app", "views", "videos", "thumb-base.svg.erb"))
+    erb_template = ERB.new(
+      img_template,
+      safe_eval=nil,
+      trim_mode=nil,
+      outvar='_erbout'
+    )
+    erb_template.result(binding)
+  end
 end

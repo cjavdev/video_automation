@@ -1,0 +1,52 @@
+<%= @video.title %>
+<%= @video.subtitle %>
+
+<button id="upload">Upload Thumbnail</button>
+
+<div id="svg-container"><%= @video.thumb_svg.html_safe %></div>
+
+<canvas id="canvas" width="1920" height="1080"></canvas>
+<div id="png-container"></div>
+
+<script>
+  // Converts from SVG to PNG.
+  var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var DOMURL = self.URL || self.webkitURL || self;
+  var img = new Image();
+  var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+  var url = DOMURL.createObjectURL(svg);
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+    var png = canvas.toDataURL("image/png");
+    document.querySelector('#png-container').innerHTML = '<img id="thumb-png" src="'+png+'"/>';
+    DOMURL.revokeObjectURL(png);
+  };
+  img.src = url;
+</script>
+<script>
+  const uploadBtn = document.querySelector('#upload');
+  uploadBtn.addEventListener('click', async function(e) {
+    e.preventDefault();
+
+    const thumbPng = document.querySelector('#thumb-png');
+    const formData  = new FormData();
+    formData.append('thumbnail', thumbPng.src)
+
+    fetch('<%= video_path(@video) %>/thumb_upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  });
+</script>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_013920) do
+ActiveRecord::Schema.define(version: 2021_02_20_183417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_013920) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "description_template_id", null: false
     t.text "summary"
+    t.string "subtitle"
     t.index ["description_template_id"], name: "index_videos_on_description_template_id"
     t.index ["youtube_id"], name: "index_videos_on_youtube_id", unique: true
   end
