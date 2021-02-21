@@ -1,6 +1,3 @@
-<%= @video.title %>
-<%= @video.subtitle %>
-
 <button id="upload">Upload Thumbnail</button>
 
 <div id="svg-container"><%= @video.thumb_svg.html_safe %></div>
@@ -36,9 +33,6 @@
 
     fetch('<%= video_path(@video) %>/thumb_upload', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
       body: formData
     })
     .then((response) => response.json())

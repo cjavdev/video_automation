@@ -5,6 +5,17 @@ class Youtube
     @session = session
   end
 
+  def set_thumbnail(video, file)
+    service.set_thumbnail(
+      video.youtube_id,
+      upload_source: file,
+      content_type: 'image/png',
+      options: {
+        authorization: auth_client
+      }
+    )
+  end
+
   def fetch_videos(&blk)
     page_token = nil
     loop do
