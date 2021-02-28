@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :video_embed
+  before_action :authenticate_user!
 
   def video_embed(video)
     <<~HTML.html_safe
