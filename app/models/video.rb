@@ -10,9 +10,12 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  description_template_id :bigint           not null
+#  summary                 :text
+#  category_id             :bigint           not null
 #
 class Video < ApplicationRecord
   belongs_to :description_template
+  belongs_to :category
   has_many :video_presenters
   has_many :presenters, through: :video_presenters
   has_many :video_resources

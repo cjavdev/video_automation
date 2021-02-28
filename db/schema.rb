@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_183417) do
+ActiveRecord::Schema.define(version: 2021_02_21_214550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "title_color", default: "#F72585", null: false
+    t.string "subtitle_color", default: "#C2F7EB", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "description_templates", force: :cascade do |t|
     t.text "template", null: false
@@ -59,7 +67,8 @@ ActiveRecord::Schema.define(version: 2021_02_20_183417) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "description_template_id", null: false
     t.text "summary"
-    t.string "subtitle"
+    t.bigint "category_id", null: false
+    t.index ["category_id"], name: "index_videos_on_category_id"
     t.index ["description_template_id"], name: "index_videos_on_description_template_id"
     t.index ["youtube_id"], name: "index_videos_on_youtube_id", unique: true
   end
@@ -75,5 +84,6 @@ ActiveRecord::Schema.define(version: 2021_02_20_183417) do
   add_foreign_key "video_presenters", "presenters"
   add_foreign_key "video_presenters", "videos"
   add_foreign_key "video_resources", "videos"
+  add_foreign_key "videos", "categories"
   add_foreign_key "videos", "description_templates"
 end

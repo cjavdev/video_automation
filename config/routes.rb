@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'categories/index'
+  get 'categories/new'
+  get 'categories/edit'
   root 'videos#index'
 
   resources :videos do
@@ -9,6 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :categories
   resources :presenters
   resources :description_templates
 

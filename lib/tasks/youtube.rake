@@ -8,6 +8,7 @@ namespace :youtube do
       video = Video.find_by(youtube_id: id)
       if video.nil?
         Video.create!(
+          category: Category.first,
           youtube_id: id,
           title: snippet.title,
           tags: snippet.tags,

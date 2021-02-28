@@ -19,8 +19,12 @@
   </div>
 
   <div>
-    <label for="subtitle">Subtitle</label>
-    <input type="text" name="video[subtitle]" id="subtitle" value="<%= @video.subtitle %>">
+    <label for="category">Category</label>
+    <select name="video[category_id]">
+      <% @categories.each do |category| %>
+        <option value="<%= category.id %>"><%= category.name %></option>
+      <% end %>
+    </select>
   </div>
 
   <div>

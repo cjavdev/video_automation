@@ -28,3 +28,4 @@ cj = Presenter.create!(
   linked_in: 'https://www.linkedin.com/in/cjavilla/',
   role: 'Developer Advocate',
 )
+category = Category.create!(name: "Default")

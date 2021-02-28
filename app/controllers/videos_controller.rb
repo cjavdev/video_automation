@@ -49,6 +49,7 @@ class VideosController < ApplicationController
     @video = Video.find(params[:id])
     @description_templates = DescriptionTemplate.all
     @presenters = Presenter.all
+    @categories = Category.all
   end
 
   def update
@@ -67,7 +68,7 @@ class VideosController < ApplicationController
     params[:video][:presenter_ids] ||= []
     params.require(:video).permit(
       :title,
-      :subtitle,
+      :category_id,
       :raw_tags,
       :chapter_markers,
       :summary,
