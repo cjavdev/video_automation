@@ -1,14 +1,14 @@
 class CategoriesController < ApplicationController
   def index
-    @categories = Category.all
+    @categories = current_user.categories.all
   end
 
   def new
-    @category = Category.new
+    @category = current_user.categories.new
   end
 
   def create
-    @category = Category.new(category_params)
+    @category = current_user.categories.new(category_params)
     if @category.save
       redirect_to categories_path
     else
@@ -18,11 +18,11 @@ class CategoriesController < ApplicationController
   end
 
   def edit
-    @category = Category.find(params[:id])
+    @category = current_user.categories.find(params[:id])
   end
 
   def update
-    @category = Category.find(params[:id])
+    @category = current_user.categories.find(params[:id])
     if @category.update(category_params)
       redirect_to categories_path
     else

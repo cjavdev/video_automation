@@ -10,8 +10,23 @@ class YoutubeSessionsController < ApplicationController
     auth_client.fetch_access_token!
     auth_client.client_secret = nil
 
+    temp_session = YoutubeSession.new(
+      credentials: JSON.parse(auth_client.to_json)
+    )
+    y = Youtube.new(temp_session)
+    users_channel = y.fetch_channel
+
+    if current_user.youtube_channel_id.blank?
+      current_user.update!(youtube_channel_id: users_channel.id)
+    elsif current_user.youtube_channel_id != users_channel.id
+      flash[:errors] = ["Unable to connect to an unknown channel with ID: #{users_channel.id}"]
+      redirect_to '/'
+      return
+    end
+
     # Store the auth client creds in the db
-    YoutubeSession.create!(credentials: JSON.parse(auth_client.to_json))
+    temp_session.user_id = current_user.id
+    temp_session.save!
 
     redirect_to '/'
   end

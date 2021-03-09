@@ -12,10 +12,12 @@
 #  description_template_id :bigint           not null
 #  summary                 :text
 #  category_id             :bigint           not null
+#  user_id                 :bigint           not null
 #
 class Video < ApplicationRecord
   belongs_to :description_template
   belongs_to :category
+  belongs_to :user
   has_many :video_presenters
   has_many :presenters, through: :video_presenters
   has_many :video_resources

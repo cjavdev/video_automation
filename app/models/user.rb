@@ -22,6 +22,7 @@
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  youtube_channel_id     :string
 #
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -29,4 +30,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :lockable, :trackable
+  has_many :youtube_sessions
+  has_many :videos
+  has_many :categories
+  has_many :description_templates
+  has_many :presenters
 end

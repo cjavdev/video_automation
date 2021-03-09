@@ -1,14 +1,14 @@
 class DescriptionTemplatesController < ApplicationController
   def index
-    @templates = DescriptionTemplate.all
+    @templates = current_user.description_templates.all
   end
 
   def new
-    @template = DescriptionTemplate.new
+    @template = current_user.description_templates.new
   end
 
   def create
-    @template = DescriptionTemplate.new(template_params)
+    @template = current_user.description_templates.new(template_params)
     if @template.save
       redirect_to description_templates_path
     else
@@ -18,11 +18,11 @@ class DescriptionTemplatesController < ApplicationController
   end
 
   def edit
-    @template = DescriptionTemplate.find(params[:id])
+    @template = current_user.description_templates.find(params[:id])
   end
 
   def update
-    @tempalte = DescriptionTemplate.find(params[:id])
+    @tempalte = current_user.description_templates.find(params[:id])
 
     if @tempalte.update(template_params)
       redirect_to description_templates_path

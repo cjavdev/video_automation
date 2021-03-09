@@ -17,6 +17,7 @@
     <% if user_signed_in? %>
       <a href="/">Home</a>
       <a href="/description_templates">Templates</a>
+      <a href="/categories">Categories</a>
       <a href="/presenters">Presenters</a>
       <a href="/youtube_sessions">Connect YouTube</a>
       <%= link_to "Sign out", destroy_user_session_path, method: :delete %>

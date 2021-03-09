@@ -2,15 +2,15 @@ class VideosController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:thumb_upload]
 
   def index
-    @videos = Video.order(id: :desc)
+    @videos = current_user.videos.order(id: :desc)
   end
 
   def show
-    @video = Video.find(params[:id])
+    @video = current_user.videos.find(params[:id])
   end
 
   def thumb
-    @video = Video.find(params[:id])
+    @video = current_user.videos.find(params[:id])
   end
 
   def thumb_upload
@@ -28,8 +28,8 @@ class VideosController < ApplicationController
 
     # Send the file data to the YouTube data API
     begin
-      video = Video.find(params[:id])
-      y = Youtube.new(YoutubeSession.last)
+      video = current_user.videos.find(params[:id])
+      y = Youtube.new(current_user.youtube_sessions.last)
       y.set_thumbnail(video, file)
     ensure
       # Close the Tempfile
@@ -39,17 +39,17 @@ class VideosController < ApplicationController
   end
 
   def sync
-    @video = Video.find(params[:id])
-    y = Youtube.new(YoutubeSession.last)
+    @video = current_user.videos.find(params[:id])
+    y = Youtube.new(current_user.youtube_sessions.last)
     y.update_video(@video)
     redirect_back(fallback_location: root_path)
   end
 
   def edit
-    @video = Video.find(params[:id])
-    @description_templates = DescriptionTemplate.all
-    @presenters = Presenter.all
-    @categories = Category.all
+    @video = current_user.videos.find(params[:id])
+    @description_templates = current_user.description_templates.all
+    @presenters = current_user.presenters.all
+    @categories = current_user.categories.all
   end
 
   def update

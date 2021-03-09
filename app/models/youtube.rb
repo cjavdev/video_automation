@@ -16,6 +16,17 @@ class Youtube
     )
   end
 
+  def fetch_channel
+    channels = service.list_channels(
+      'id',
+      mine: true,
+      options: {
+        authorization: auth_client
+      }
+    )
+    channels.items.first
+  end
+
   def fetch_videos(&blk)
     page_token = nil
     loop do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_28_230014) do
+ActiveRecord::Schema.define(version: 2021_03_09_172357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.string "subtitle_color", default: "#C2F7EB", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
   create_table "description_templates", force: :cascade do |t|
@@ -28,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_description_templates_on_user_id"
   end
 
   create_table "presenters", force: :cascade do |t|
@@ -37,6 +41,8 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.string "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_presenters_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -59,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "youtube_channel_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -94,8 +101,10 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.bigint "description_template_id", null: false
     t.text "summary"
     t.bigint "category_id", null: false
+    t.bigint "user_id", null: false
     t.index ["category_id"], name: "index_videos_on_category_id"
     t.index ["description_template_id"], name: "index_videos_on_description_template_id"
+    t.index ["user_id"], name: "index_videos_on_user_id"
     t.index ["youtube_id"], name: "index_videos_on_youtube_id", unique: true
   end
 
@@ -104,12 +113,19 @@ ActiveRecord::Schema.define(version: 2021_02_28_230014) do
     t.json "credentials"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
     t.index ["session_token"], name: "index_youtube_sessions_on_session_token"
+    t.index ["user_id"], name: "index_youtube_sessions_on_user_id"
   end
 
+  add_foreign_key "categories", "users"
+  add_foreign_key "description_templates", "users"
+  add_foreign_key "presenters", "users"
   add_foreign_key "video_presenters", "presenters"
   add_foreign_key "video_presenters", "videos"
   add_foreign_key "video_resources", "videos"
   add_foreign_key "videos", "categories"
   add_foreign_key "videos", "description_templates"
+  add_foreign_key "videos", "users"
+  add_foreign_key "youtube_sessions", "users"
 end

@@ -1,14 +1,14 @@
 class PresentersController < ApplicationController
   def index
-    @presenters = Presenter.all
+    @presenters = current_user.presenters.all
   end
 
   def new
-    @presenter = Presenter.new
+    @presenter = current_user.presenters.new
   end
 
   def create
-    @presenter = Presenter.new(presenter_params)
+    @presenter = current_user.presenters.new(presenter_params)
     if @presenter.save
       redirect_to presenters_path
     else
@@ -18,11 +18,11 @@ class PresentersController < ApplicationController
   end
 
   def edit
-    @presenter = Presenter.find(params[:id])
+    @presenter = current_user.presenters.find(params[:id])
   end
 
   def update
-    @presenter = Presenter.find(params[:id])
+    @presenter = current_user.presenters.find(params[:id])
     if @presenter.update(presenter_params)
       redirect_to presenters_path
     else
