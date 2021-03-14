@@ -18,14 +18,20 @@ template_content = <<~XXX
 <% end %>
 XXX
 
-template = DescriptionTemplate.create!(
-  name: 'Default',
-  template: template_content
+user = User.create!(
+  email: 'jenny.rosen@example.com',
+  password: 'password'
 )
-cj = Presenter.create!(
+user.presenters.create!(
   name: 'CJ Avilla',
   twitter_handle: 'cjav_dev',
   linked_in: 'https://www.linkedin.com/in/cjavilla/',
   role: 'Developer Advocate',
 )
-category = Category.create!(name: "Default")
+
+template = user.description_templates.create!(
+  name: 'Default',
+  template: template_content
+)
+
+category = user.categories.create!(name: "Default")

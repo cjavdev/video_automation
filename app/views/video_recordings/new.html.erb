@@ -1,0 +1,59 @@
+<h1>Record a new video</h1>
+
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+<div>
+  <video id="live" height="200" width="300" style="border: 1px solid black" autoplay muted></video>
+</div>
+<div>
+  <video id="playback" height="200" width="300" style="border: 1px solid black" controls></video>
+</div>
+
+<script charset="utf-8">
+  (async () => {
+    const startBtn = document.querySelector('#start');
+    const stopBtn = document.querySelector('#stop');
+    const liveVideo = document.querySelector('#live');
+    const playbackVideo = document.querySelector('#playback');
+
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    liveVideo.srcObject = stream;
+
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    recorder.ondataavailable = (e) => {
+      chunks.push(e.data);
+    }
+
+    startBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Start recording
+      recorder.start();
+    });
+
+    stopBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Stop recording
+      recorder.stop();
+
+      setTimeout(() => {
+        const formData = new FormData();
+        formData.append('video_recordings[file]', chunks[0]);
+        fetch('/video_recordings', {
+          method: 'POST',
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Success:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+        // playbackVideo.src = window.URL.createObjectURL(chunks[0]);
+        // playbackVideo.play();
+      }, 500);
+    });
+  })();
+</script>

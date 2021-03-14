@@ -5,6 +5,30 @@ class Youtube
     @session = session
   end
 
+  def upload_video(file, title, description)
+    status = Google::Apis::YoutubeV3::VideoStatus.new(
+      privacy_status: 'unlisted',
+    )
+    snippet = Google::Apis::YoutubeV3::VideoSnippet.new(
+      title: title,
+      description: description,
+    )
+    video_object = Google::Apis::YoutubeV3::Video.new(
+      status: status,
+      snippet: snippet,
+    )
+    service.insert_video(
+      'id,snippet,status',
+      video_object,
+      notify_subscribers: false,
+      upload_source: file,
+      content_type: 'video/webm',
+      options: {
+        authorization: auth_client
+      }
+    )
+  end
+
   def set_thumbnail(video, file)
     service.set_thumbnail(
       video.youtube_id,

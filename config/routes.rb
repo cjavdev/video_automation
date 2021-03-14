@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
   devise_for :users
-  get 'categories/index'
-  get 'categories/new'
-  get 'categories/edit'
   root 'videos#index'
 
   resources :videos do
@@ -13,6 +10,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :video_recordings
   resources :categories
   resources :presenters
   resources :description_templates
