@@ -1,3 +1,4 @@
+require 'resque/server'
 Rails.application.routes.draw do
   devise_for :users
   root 'videos#index'
@@ -14,6 +15,10 @@ Rails.application.routes.draw do
   resources :categories
   resources :presenters
   resources :description_templates
+
+  authenticate :user, -> (u) { u.id == 1 } do
+    mount Resque::Server.new, at: '/jobs'
+  end
 
   # Authenticate to a YouTube Channel.
   get '/youtube_sessions', to: 'youtube_sessions#new'
