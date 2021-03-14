@@ -5,6 +5,11 @@ class Youtube
     @session = session
   end
 
+  def refresh_token
+    # returns the refresh token data
+    auth_client.refresh!
+  end
+
   def upload_video(file, title, description)
     status = Google::Apis::YoutubeV3::VideoStatus.new(
       privacy_status: 'unlisted',
@@ -110,5 +115,13 @@ class Youtube
 
   def auth_client
     @auth_client ||= Signet::OAuth2::Client.new(@session.credentials)
+    @auth_client.update!(
+      client_id: Rails.application.credentials.dig(:youtube, :client_id),
+      client_secret: Rails.application.credentials.dig(:youtube, :client_secret),
+      additional_parameters: {
+        'access_type' => 'offline',
+      }
+    )
+    @auth_client
   end
 end
