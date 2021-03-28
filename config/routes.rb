@@ -1,5 +1,6 @@
 require 'resque/server'
 Rails.application.routes.draw do
+  get 'thumbnail_headshots/new'
   devise_for :users
   root 'videos#index'
 
