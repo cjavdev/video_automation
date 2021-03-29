@@ -1,0 +1,113 @@
+<h1>Add a sticker to a Thumbnail</h1>
+
+<div class="my-bitmoji-stickerpicker-icon-target"></div>
+<button type="submit" id="generate-png">Generate PNG</button>
+<div id="svg-container"><%= Video.first.thumb_svg.html_safe %></div>
+
+<canvas id="canvas" width="1920" height="1080"></canvas>
+<div id="png-container"></div>
+
+<script>
+  // // Converts from SVG to PNG.
+  var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var DOMURL = self.URL || self.webkitURL || self;
+  var img = new Image();
+  var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+  var url = DOMURL.createObjectURL(svg);
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+  };
+  img.src = url;
+  const resetCanvas = () => {
+    ctx.drawImage(img, 0, 0);
+  }
+
+  let draggable = false;
+  canvas.onmousedown = (e) => {
+    // detect if the click was on the image;
+    if(e.layerX <= (currentX + stickerImg.width/2) &&
+      e.layerX >= (currentX - stickerImg.width/2) &&
+      e.layerY <= (currentY + stickerImg.height/2) &&
+      e.layerY >= (currentY - stickerImg.height/2)) {
+      draggable = true;
+    }
+  }
+  canvas.onmousemove = (e) => {
+    if(draggable) {
+      currentX = e.layerX
+      currentY = e.layerY
+    }
+  }
+  canvas.onmouseup = (e) => {
+    draggable = false;
+  }
+  canvas.onmouseout = (e) => {
+    draggable = false;
+  }
+
+  const generatePNGBtn = document.querySelector('#generate-png');
+  generatePNGBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    var png = canvas.toDataURL("image/png");
+    document.querySelector('#png-container').innerHTML = '<img id="thumb-png" src="'+png+'"/>';
+    DOMURL.revokeObjectURL(png);
+  });
+
+  let stickerImg, currentX = canvas.width/2, currentY = canvas.height/2;
+  window.snapKitInit = function () {
+    // Argument 1
+    var bitmojiWebPickerIconClass = "my-bitmoji-stickerpicker-icon-target";
+
+    // Argument 2
+    var uiOptions = {
+      onStickerPickCallback: function onStickerPickCallback(bitmojiImgURL) {
+        // When a sticker is picked, run this function.
+        stickerImg = new Image();
+        stickerImg.src = bitmojiImgURL;
+        stickerImg.crossOrigin = 'Anonymous';
+        stickerImg.onload = () => {
+          setInterval(() => {
+            resetCanvas();
+            ctx.drawImage(
+              stickerImg, currentX - stickerImg.width/2,
+              currentY - stickerImg.height/2
+            );
+          }, 200);
+        }
+        console.log(bitmojiImgURL);
+      },
+      webpickerPosition: "bottomRight",
+    };
+
+    // Argument 3
+    var loginParamsObj = {
+      clientId: "2aca9e5d-33c8-425b-9946-394475edd917",
+      redirectURI: "http://localhost:3000/thumbnail_stickers/new",
+      scopeList: [
+        // the list of scopes you are approved for
+        "user.bitmoji.avatar",
+        "user.display_name",
+      ],
+    };
+
+    // Mount Bitmoji Icon(s)
+    snap.bitmojikit.mountBitmojiStickerPickerIcons(
+      bitmojiWebPickerIconClass,
+      uiOptions,
+      loginParamsObj
+    );
+  };
+
+  // Load the SDK asynchronously
+  (function (d, s, id) {
+    var js,
+      sjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://sdk.snapkit.com/js/v1/login_bitmoji.js";
+    sjs.parentNode.insertBefore(js, sjs);
+  })(document, "script", "bitmojikit-sdk");
+</script>

@@ -1,0 +1,2 @@
+module ThumbnailStickersHelper
+end
