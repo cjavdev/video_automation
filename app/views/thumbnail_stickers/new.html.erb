@@ -83,7 +83,7 @@
 
     // Argument 3
     var loginParamsObj = {
-      clientId: "2aca9e5d-33c8-425b-9946-394475edd917",
+      clientId: "<%= Rails.application.credentials.dig(:bitmoji, :client_id) %>",
       redirectURI: "http://localhost:3000/thumbnail_stickers/new",
       scopeList: [
         // the list of scopes you are approved for
