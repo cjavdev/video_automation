@@ -2,6 +2,11 @@
 
 This is a project to help automate some steps of the Video Production process.
 
+It turns out there's a really excellent tool called
+[TubeBuddy](https://www.tubebuddy.com/cjavdev) that already exists. I've
+started using TubeBuddy in the past few months and really like it. If you buy a
+license, I'll get a small cut for being an affiliate.
+
 It was built in public and you can [watch
 videos](https://www.youtube.com/playlist?list=PLS6F722u-R6ILDUeteD-A_q6Ja4SH8v95)
 about how each piece was built:
