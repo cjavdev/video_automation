@@ -10,40 +10,40 @@ class Youtube
     auth_client.refresh!
   end
 
-  def upload_video(file, title, description)
-    status = Google::Apis::YoutubeV3::VideoStatus.new(
-      privacy_status: 'unlisted',
-    )
-    snippet = Google::Apis::YoutubeV3::VideoSnippet.new(
-      title: title,
-      description: description,
-    )
-    video_object = Google::Apis::YoutubeV3::Video.new(
-      status: status,
-      snippet: snippet,
-    )
-    service.insert_video(
-      'id,snippet,status',
-      video_object,
-      notify_subscribers: false,
-      upload_source: file,
-      content_type: 'video/webm',
-      options: {
-        authorization: auth_client
-      }
-    )
-  end
-
-  def set_thumbnail(video, file)
-    service.set_thumbnail(
-      video.youtube_id,
-      upload_source: file,
-      content_type: 'image/png',
-      options: {
-        authorization: auth_client
-      }
-    )
-  end
+  # def upload_video(file, title, description)
+  #   status = Google::Apis::YoutubeV3::VideoStatus.new(
+  #     privacy_status: 'unlisted',
+  #   )
+  #   snippet = Google::Apis::YoutubeV3::VideoSnippet.new(
+  #     title: title,
+  #     description: description,
+  #   )
+  #   video_object = Google::Apis::YoutubeV3::Video.new(
+  #     status: status,
+  #     snippet: snippet,
+  #   )
+  #   service.insert_video(
+  #     'id,snippet,status',
+  #     video_object,
+  #     notify_subscribers: false,
+  #     upload_source: file,
+  #     content_type: 'video/webm',
+  #     options: {
+  #       authorization: auth_client
+  #     }
+  #   )
+  # end
+  #
+  # def set_thumbnail(video, file)
+  #   service.set_thumbnail(
+  #     video.youtube_id,
+  #     upload_source: file,
+  #     content_type: 'image/png',
+  #     options: {
+  #       authorization: auth_client
+  #     }
+  #   )
+  # end
 
   def fetch_channel
     channels = service.list_channels(
@@ -90,24 +90,38 @@ class Youtube
     end
   end
 
-  def update_video(video)
-    external_video = Google::Apis::YoutubeV3::Video.new(
-      id: video.youtube_id,
-      snippet: Google::Apis::YoutubeV3::VideoSnippet.new(
-        title: video.title,
-        tags: video.tags,
-        category_id: 27, # Education
-        description: video.description,
-      )
-    )
-    service.update_video(
+  def fetch_video(video_id)
+    video_list = service.list_videos(
       'snippet',
-      external_video,
+      id: [video_id],
       options: {
         authorization: auth_client
       }
     )
+    if video_list.items.empty?
+      raise "Video #{video_id} not found"
+    end
+    video_list.items.first
   end
+
+  # def update_video(video)
+  #   external_video = Google::Apis::YoutubeV3::Video.new(
+  #     id: video.youtube_id,
+  #     snippet: Google::Apis::YoutubeV3::VideoSnippet.new(
+  #       title: video.title,
+  #       tags: video.tags,
+  #       category_id: 27, # Education
+  #       description: video.description,
+  #     )
+  #   )
+  #   service.update_video(
+  #     'snippet',
+  #     external_video,
+  #     options: {
+  #       authorization: auth_client
+  #     }
+  #   )
+  # end
 
   def service
     @service ||= Google::Apis::YoutubeV3::YouTubeService.new

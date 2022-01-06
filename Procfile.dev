@@ -1,0 +1,6 @@
+web: bin/rails server -p 3000
+js: yarn build --watch
+css: yarn build:css --watch
+stripe: stripe listen --forward-to localhost:3000/pay/webhooks/stripe -c localhost:3000/pay/webhooks/stripe
+jobs: QUEUE=* rake resque:work
+css: rails tailwindcss:watch

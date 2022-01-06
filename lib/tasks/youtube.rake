@@ -22,6 +22,12 @@ namespace :youtube do
             summary: snippet.description,
             description_template: template,
           )
+        else
+          video.update(
+            title: snippet.title,
+            tags: snippet.tags,
+            summary: snippet.description,
+          )
         end
       end
     end

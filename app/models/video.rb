@@ -26,15 +26,30 @@ class Video < ApplicationRecord
     self.tags = raw_tags.split(',').map(&:strip)
   end
 
-  def description
-    erb_template = ERB.new(
-      description_template.template,
-      safe_eval=nil,
-      trim_mode=nil,
-      outvar='_erbout'
-    )
-    erb_template.result(binding)
+  def url
+    "https://www.youtube.com/watch?v=#{youtube_id}"
   end
+
+  def fetch!
+    youtube = Youtube.new(user.youtube_sessions.last)
+    video = youtube.fetch_video(youtube_id)
+    snippet = video.snippet
+    update(
+      title: snippet.title,
+      description: snippet.description,
+      tags: snippet.tags,
+    )
+  end
+
+  # def description
+  #   erb_template = ERB.new(
+  #     description_template.template,
+  #     safe_eval=nil,
+  #     trim_mode=nil,
+  #     outvar='_erbout'
+  #   )
+  #   erb_template.result(binding)
+  # end
 
   def thumb_svg
     img_template = File.read(File.join(Rails.root, "app", "views", "videos", "thumb-base.svg.erb"))
