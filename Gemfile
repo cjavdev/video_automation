@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.7.2"
+ruby "4.0.9"
 
 # Use main development branch of Rails
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 8.1.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -13,7 +13,7 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
+gem "puma", ">= 6.0"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -45,8 +45,6 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-# Use Sass to process CSS
-gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -69,10 +67,12 @@ end
 
 
 gem "letter_opener", "~> 1.7", :group => :development
-gem "resque", "~> 2.2"
-gem "pay", "~> 3.0"
-gem "stripe", "~> 5.42"
-gem "devise", "~> 4.8"
+gem "resque", "~> 3.0"
+gem "pay", "~> 12.0"
+gem "stripe", "~> 20.0"
+gem "devise", "~> 5.0"
 
-gem "tailwindcss-rails", "~> 2.0"
+gem "tailwindcss-rails", "~> 3.3"
 gem 'google-api-client'
+
+gem "csv"

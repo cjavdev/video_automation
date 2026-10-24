@@ -1,11 +1,18 @@
 const path = require('path')
 const rails = require('esbuild-rails')
 
-require("esbuild").build({
+const options = {
   entryPoints: ["application.js"],
   bundle: true,
   outdir: path.join(process.cwd(), "app/assets/builds"),
   absWorkingDir: path.join(process.cwd(), "app/javascript"),
-  watch: process.argv.includes("--watch"),
   plugins: [rails()],
-}).catch(() => process.exit(1))
+}
+
+const esbuild = require("esbuild")
+
+if (process.argv.includes("--watch")) {
+  esbuild.context(options).then(ctx => ctx.watch()).catch((e) => { console.error(e); process.exit(1) })
+} else {
+  esbuild.build(options).catch((e) => { console.error(e); process.exit(1) })
+}
